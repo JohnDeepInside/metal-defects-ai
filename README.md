@@ -29,6 +29,15 @@ Project structure
 Run it yourself
 Train Acc
 93.2% 98.3% 99.0% 99.7%
+
+## Model Weights
+
+Trained model weights (`neu_defects_efficientnet.pth`) are not included in this repository due to file size (20MB).
+
+To obtain the trained model:
+- Train from scratch using `train.py` (recommended for learning)
+- Contact for pre-trained weights: Available upon request
+
 # Training script
 Val Acc
 100% 100% 100% 100%
