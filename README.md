@@ -20,6 +20,8 @@ Project structure
   ├── train.py
   └── README.md
 
+**Note on validation set:** The validation set contains only 72 images across 6 classes. While the 100% accuracy is encouraging, this small sample size means the model should be validated on larger real-world datasets before production deployment. For industrial applications, cross-validation or larger test sets are recommended.
+
 ## Training visualization
 
 ![Training Progress](https://github.com/JohnDeepInside/metal-defects-ai/raw/main/training_plot.png)
@@ -30,10 +32,10 @@ Train Acc
 # Training script
 Val Acc
 100% 100% 100% 100%
-                                 # Install dependencies
-  pip install torch torchvision
-  # Train from scratch
-  python train.py
+# Install dependencies
+pip install torch torchvision
+# Train from scratch
+python train.py
 Tech stack
 Python 3.12
 PyTorch
