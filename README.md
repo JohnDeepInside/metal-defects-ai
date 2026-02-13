@@ -14,10 +14,16 @@ Training: 15 epochs on GPU (Google Colab T4)
   Results
    Epoch
 1 2 5 15
+
 Project structure
   metal-defects-ai/
   ├── train.py
   └── README.md
+
+## Training visualization
+
+![Training Progress](https://github.com/JohnDeepInside/metal-defects-ai/raw/main/training_plot.png)
+
 Run it yourself
 Train Acc
 93.2% 98.3% 99.0% 99.7%
