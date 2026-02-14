@@ -155,4 +155,4 @@ This project is for **research and portfolio purposes only**. It is not intended
 
 Built by **Nikolai Shatikhin** — ML Engineer specializing in Computer Vision and image classification.
 
-Open to freelance projects. Reach out via [GitHub](https://github.com/shatini) or [Telegram](https://t.me/niko_shat).
+Open to freelance projects. Reach out via [GitHub](https://github.com/shatini) or [Telegram](https://t.me/That_Special_Someone).
