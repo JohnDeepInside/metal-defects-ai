@@ -15,17 +15,17 @@ ML Engineer specializing in Computer Vision and Deep Learning. I build AI soluti
 
 ## Projects
 
-### [Metal Defects Detection](https://github.com/JohnDeepInside/metal-defects-ai)
+### [Metal Defects Detection](https://github.com/shatini/metal-defects-ai)
 AI system for automatic detection of metal surface defects using deep learning. Classifies 6 types of defects in steel surfaces for industrial quality control.
 
 `PyTorch` `ResNet` `Computer Vision` `Industrial AI`
 
-### [Skin Cancer Detection](https://github.com/JohnDeepInside/skin-cancer-detection-ai)
+### [Skin Cancer Detection](https://github.com/shatini/skin-cancer-detection-ai)
 Deep learning model for melanoma and skin lesion classification. Multi-class classifier trained on dermoscopic images to assist in early skin cancer screening.
 
 `PyTorch` `Medical Imaging` `Classification` `ResNet`
 
-### [Plant Disease Detection](https://github.com/JohnDeepInside/agro-ai-portfolio)
+### [Plant Disease Detection](https://github.com/shatini/agro-ai-portfolio)
 Deep learning model for plant disease classification across 38 categories with 98.8% validation accuracy. Helps farmers identify crop diseases from leaf photographs.
 
 `PyTorch` `Agriculture` `Image Classification` `ResNet`
