@@ -37,6 +37,13 @@ Deep learning model for plant disease classification across 38 categories with 9
 - **Agriculture AI** — crop disease identification, precision farming
 - **Custom CV Solutions** — object detection, image classification, segmentation
 
+## GitHub Stats
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=shatini&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" height="165" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=shatini&layout=compact&theme=tokyonight&hide_border=true" height="165" />
+</p>
+
 ## Contact
 
 [![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/That_Special_Someone)
