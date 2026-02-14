@@ -1,0 +1,36 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[codz]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
+.venv
+env/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Environments
+.env
+.envrc
+
+# Project-specific
+data/
+outputs/
+*.pth
+*.pt
+*.log

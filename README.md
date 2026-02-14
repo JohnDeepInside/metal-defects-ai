@@ -1,5 +1,10 @@
 # Metal Surface Defect Detection
 
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?logo=pytorch&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+
 Deep learning system for automated visual inspection of steel surfaces. Classifies 6 types of manufacturing defects using transfer learning with EfficientNet-B0.
 
 ## Architecture

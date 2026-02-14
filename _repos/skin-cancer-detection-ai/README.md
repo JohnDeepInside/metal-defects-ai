@@ -1,5 +1,10 @@
 # Skin Cancer Detection
 
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?logo=pytorch&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+
 Deep learning system for automated classification of skin lesions from dermoscopic images. Trained on 10,000+ medical images across 7 diagnostic categories using MobileNetV2 with transfer learning.
 
 ## Architecture
