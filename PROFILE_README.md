@@ -1,6 +1,8 @@
 # Hi, I'm Nikolai Shatikhin
 
-ML Engineer specializing in Computer Vision and Deep Learning. I build AI solutions for industrial quality control, agriculture, and medical imaging. Based in Ulaanbaatar, Mongolia — available for freelance and contract work worldwide.
+ML Engineer specializing in Computer Vision and Deep Learning. I build production-ready AI solutions for industrial quality control, agriculture, and medical imaging.
+
+Based in Ulaanbaatar, Mongolia — available for freelance and contract work worldwide.
 
 ## Tech Stack
 
@@ -16,19 +18,19 @@ ML Engineer specializing in Computer Vision and Deep Learning. I build AI soluti
 ## Projects
 
 ### [Metal Defects Detection](https://github.com/shatini/metal-defects-ai)
-AI system for automatic detection of metal surface defects using deep learning. Classifies 6 types of defects in steel surfaces for industrial quality control.
+Automated visual inspection of steel surfaces — classifies 6 types of manufacturing defects using EfficientNet-B0. Built for industrial quality control pipelines.
 
 `PyTorch` `EfficientNet` `Computer Vision` `Industrial AI`
 
 ### [Skin Cancer Detection](https://github.com/shatini/skin-cancer-detection-ai)
-Deep learning model for melanoma and skin lesion classification. Multi-class classifier trained on dermoscopic images to assist in early skin cancer screening.
+Dermoscopic image classifier for 7 skin lesion types including melanoma. Trained on HAM10000 dataset (10,000+ images) with class imbalance handling.
 
-`PyTorch` `Medical Imaging` `Classification` `MobileNetV2`
+`PyTorch` `Medical Imaging` `MobileNetV2` `HAM10000`
 
-### [Plant Disease Detection](https://github.com/shatini/crop-disease-detection-ai)
-Deep learning model for plant disease classification across 38 categories with 98.8% validation accuracy. Helps farmers identify crop diseases from leaf photographs.
+### [Crop Disease Detection](https://github.com/shatini/crop-disease-detection-ai)
+Plant disease classifier covering 14 crops and 38 categories with **98.8% accuracy**. Trained on 54,000+ leaf images from PlantVillage dataset.
 
-`PyTorch` `Agriculture` `Image Classification` `ResNet18`
+`PyTorch` `Agriculture` `ResNet18` `98.8% accuracy`
 
 ## What I Do
 

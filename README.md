@@ -5,28 +5,19 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
-Deep learning system for automated visual inspection of steel surfaces. Classifies 6 types of manufacturing defects using transfer learning with EfficientNet-B0.
+Deep learning system for automated visual inspection of steel surfaces. Classifies **6 types of manufacturing defects** using transfer learning with EfficientNet-B0.
 
-## Architecture
+> **Why it matters:** Manufacturing lines lose time and money when defective parts slip through quality control. Manual visual inspection is slow, inconsistent, and expensive. This model analyzes a steel surface photo in milliseconds and returns the defect type with confidence scores.
 
-![Model Architecture](assets/architecture.png)
+## Key Results
 
-## Problem
-
-Manufacturing lines lose time and money when defective parts slip through quality control. Manual visual inspection is slow, inconsistent, and expensive. This model automates the process — analyzing a single photo of a steel surface in milliseconds and returning the defect type with confidence scores.
-
-## Defect Types
-
-| Defect | Description |
-|--------|-------------|
-| **Crazing** | Fine network of surface cracks |
-| **Inclusion** | Foreign material embedded in surface |
-| **Patches** | Irregular surface discoloration |
-| **Pitted Surface** | Small holes or cavities |
-| **Rolled-in Scale** | Oxide scale pressed into surface |
-| **Scratches** | Linear surface damage |
-
-## Results
+| Metric | Value |
+|--------|-------|
+| Architecture | EfficientNet-B0 (ImageNet pretrained) |
+| Classes | 6 defect types |
+| Dataset | NEU Surface Defects — 1,800 images |
+| Input size | 224 x 224 px |
+| Class balancing | WeightedRandomSampler |
 
 ### Training Curves
 
@@ -44,23 +35,24 @@ Manufacturing lines lose time and money when defective parts slip through qualit
 
 ![Model Comparison](assets/model_comparison.png)
 
+## Defect Types
+
+| Defect | Description |
+|--------|-------------|
+| **Crazing** | Fine network of surface cracks |
+| **Inclusion** | Foreign material embedded in surface |
+| **Patches** | Irregular surface discoloration |
+| **Pitted Surface** | Small holes or cavities |
+| **Rolled-in Scale** | Oxide scale pressed into surface |
+| **Scratches** | Linear surface damage |
+
 ### Dataset Distribution
 
 ![Dataset Distribution](assets/dataset_distribution.png)
 
-## Project Structure
+## Architecture
 
-```
-metal-defects-ai/
-├── config.py          # Centralized configuration & CLI arguments
-├── dataset.py         # Data loading, augmentation, train/val/test split
-├── model.py           # Model factory (EfficientNet-B0, MobileNetV2, ResNet18)
-├── train.py           # Training loop with early stopping & checkpointing
-├── evaluate.py        # Evaluation: confusion matrix, classification report, plots
-├── inference.py       # Single-image prediction with visualization
-├── requirements.txt   # Pinned dependencies
-└── README.md
-```
+![Model Architecture](assets/architecture.png)
 
 ## Quick Start
 
@@ -114,13 +106,10 @@ python inference.py --image test_image.jpg --checkpoint outputs/checkpoints/best
 
 | Parameter | Value |
 |-----------|-------|
-| Architecture | EfficientNet-B0 (ImageNet pretrained) |
-| Input size | 224 x 224 px |
 | Optimizer | Adam (lr=1e-3, weight_decay=1e-4) |
 | Scheduler | ReduceLROnPlateau (patience=2, factor=0.5) |
 | Batch size | 32 |
 | Early stopping | Patience = 5 epochs |
-| Class balancing | WeightedRandomSampler |
 | Seed | 42 |
 
 ### Data Augmentation
@@ -139,6 +128,20 @@ python inference.py --image test_image.jpg --checkpoint outputs/checkpoints/best
 - **Reproducibility** — fixed random seeds across all libraries
 - **Class balancing** — weighted sampling handles imbalanced datasets
 - **Comprehensive evaluation** — confusion matrix, per-class accuracy, classification report, training curves
+
+## Project Structure
+
+```
+metal-defects-ai/
+├── config.py          # Centralized configuration & CLI arguments
+├── dataset.py         # Data loading, augmentation, train/val/test split
+├── model.py           # Model factory (EfficientNet-B0, MobileNetV2, ResNet18)
+├── train.py           # Training loop with early stopping & checkpointing
+├── evaluate.py        # Evaluation: confusion matrix, classification report, plots
+├── inference.py       # Single-image prediction with visualization
+├── requirements.txt   # Pinned dependencies
+└── README.md
+```
 
 ## Tech Stack
 

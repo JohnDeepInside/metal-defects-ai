@@ -5,29 +5,19 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
-Deep learning system for automated classification of skin lesions from dermoscopic images. Trained on 10,000+ medical images across 7 diagnostic categories using MobileNetV2 with transfer learning.
+Deep learning system for automated classification of skin lesions from dermoscopic images. Trained on **10,000+ medical images** across **7 diagnostic categories** using MobileNetV2 with transfer learning.
 
-## Architecture
+> **Why it matters:** Early detection of melanoma saves lives, but visual diagnosis is challenging even for trained dermatologists. This model assists screening by classifying suspicious skin lesions, helping identify cases that warrant immediate medical review.
 
-![Model Architecture](assets/architecture.png)
+## Key Results
 
-## Problem
-
-Early detection of melanoma saves lives, but visual diagnosis is challenging even for trained dermatologists. This model assists screening by classifying suspicious skin lesions, helping identify cases that warrant immediate medical review.
-
-## Diagnostic Categories
-
-| Class | Condition | Risk Level |
-|-------|-----------|------------|
-| **mel** | Melanoma | High — most dangerous skin cancer |
-| **bcc** | Basal Cell Carcinoma | Medium — slow-growing cancer |
-| **akiec** | Actinic Keratoses | Medium — precancerous |
-| **bkl** | Benign Keratosis | Low |
-| **nv** | Melanocytic Nevi (moles) | Low |
-| **df** | Dermatofibroma | Low |
-| **vasc** | Vascular Lesion | Low |
-
-## Results
+| Metric | Value |
+|--------|-------|
+| Architecture | MobileNetV2 (ImageNet pretrained) |
+| Classes | 7 diagnostic categories |
+| Dataset | HAM10000 — 10,015 dermoscopic images |
+| Input size | 224 x 224 px |
+| Class balancing | WeightedRandomSampler |
 
 ### Training Curves
 
@@ -45,23 +35,25 @@ Early detection of melanoma saves lives, but visual diagnosis is challenging eve
 
 ![ROC Curves](assets/roc_curves.png)
 
+## Diagnostic Categories
+
+| Class | Condition | Risk Level |
+|-------|-----------|------------|
+| **mel** | Melanoma | High — most dangerous skin cancer |
+| **bcc** | Basal Cell Carcinoma | Medium — slow-growing cancer |
+| **akiec** | Actinic Keratoses | Medium — precancerous |
+| **bkl** | Benign Keratosis | Low |
+| **nv** | Melanocytic Nevi (moles) | Low |
+| **df** | Dermatofibroma | Low |
+| **vasc** | Vascular Lesion | Low |
+
 ### Class Distribution (HAM10000)
 
 ![Class Distribution](assets/class_distribution.png)
 
-## Project Structure
+## Architecture
 
-```
-skin-cancer-detection-ai/
-├── config.py          # Centralized configuration & CLI arguments
-├── dataset.py         # Data loading, augmentation, HAM10000 organization
-├── model.py           # Model factory (MobileNetV2, EfficientNet-B0, ResNet18)
-├── train.py           # Training loop with early stopping & checkpointing
-├── evaluate.py        # Confusion matrix, classification report, plots
-├── inference.py       # Single-image prediction with visualization
-├── requirements.txt   # Dependencies
-└── README.md
-```
+![Model Architecture](assets/architecture.png)
 
 ## Quick Start
 
@@ -107,13 +99,10 @@ python inference.py --image lesion.jpg --checkpoint outputs/checkpoints/best_mod
 
 | Parameter | Value |
 |-----------|-------|
-| Architecture | MobileNetV2 (ImageNet pretrained) |
-| Input size | 224 x 224 px |
 | Optimizer | Adam (lr=1e-3, weight_decay=1e-4) |
 | Scheduler | ReduceLROnPlateau (patience=2, factor=0.5) |
 | Batch size | 32 |
 | Early stopping | Patience = 5 epochs |
-| Class balancing | WeightedRandomSampler |
 | Seed | 42 |
 
 ### Dataset Challenges
@@ -138,6 +127,20 @@ python inference.py --image lesion.jpg --checkpoint outputs/checkpoints/best_mod
 - **Reproducibility** — fixed random seeds across all libraries
 - **Class balancing** — weighted sampling compensates for severe imbalance
 - **Medical warnings** — inference script flags high-risk predictions
+
+## Project Structure
+
+```
+skin-cancer-detection-ai/
+├── config.py          # Centralized configuration & CLI arguments
+├── dataset.py         # Data loading, augmentation, HAM10000 organization
+├── model.py           # Model factory (MobileNetV2, EfficientNet-B0, ResNet18)
+├── train.py           # Training loop with early stopping & checkpointing
+├── evaluate.py        # Confusion matrix, classification report, plots
+├── inference.py       # Single-image prediction with visualization
+├── requirements.txt   # Dependencies
+└── README.md
+```
 
 ## Tech Stack
 

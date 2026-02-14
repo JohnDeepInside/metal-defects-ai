@@ -5,15 +5,31 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
-Deep learning system for identifying plant diseases from leaf photographs. Trained on 54,000+ images across 38 disease categories using ResNet18 with transfer learning, achieving 98.8% validation accuracy.
+Deep learning system for identifying plant diseases from leaf photographs. Trained on **54,000+ images** across **38 disease categories** using ResNet18 with transfer learning, achieving **98.8% validation accuracy**.
 
-## Architecture
+> **Why it matters:** Farmers lose billions annually because crop diseases are caught too late. Lab diagnosis is slow and expensive. This model identifies 38 different plant conditions from a single photo — no lab, no expert, no waiting.
 
-![Model Architecture](assets/architecture.png)
+## Key Results
 
-## Problem
+| Metric | Value |
+|--------|-------|
+| Validation accuracy | **98.8%** |
+| Architecture | ResNet18 (ImageNet pretrained) |
+| Classes | 38 disease categories, 14 crop species |
+| Dataset | PlantVillage — 54,305 images |
+| Input size | 224 x 224 px |
 
-Farmers lose billions annually because crop diseases are caught too late. Lab diagnosis is slow and expensive. This model identifies 38 different plant conditions from a single photo — no lab, no expert, no waiting.
+### Training Curves
+
+![Training Curves](assets/training_curves.png)
+
+### Top & Bottom Performing Classes
+
+![Top & Bottom Classes](assets/top_bottom_classes.png)
+
+### Model Comparison
+
+![Model Comparison](assets/model_comparison.png)
 
 ## Supported Crops & Diseases
 
@@ -29,20 +45,6 @@ The model covers **14 crop species** and **38 categories** including:
 | **Pepper** | Bacterial spot, Healthy |
 | **+ more** | Cherry, Strawberry, Peach, Orange, Soybean, Squash, Blueberry |
 
-## Results
-
-### Training Curves
-
-![Training Curves](assets/training_curves.png)
-
-### Top & Bottom Performing Classes
-
-![Top & Bottom Classes](assets/top_bottom_classes.png)
-
-### Model Comparison
-
-![Model Comparison](assets/model_comparison.png)
-
 ### Dataset — Images per Crop
 
 ![Crop Distribution](assets/crop_distribution.png)
@@ -51,19 +53,9 @@ The model covers **14 crop species** and **38 categories** including:
 
 ![Disease vs Healthy](assets/disease_healthy_ratio.png)
 
-## Project Structure
+## Architecture
 
-```
-crop-disease-detection-ai/
-├── config.py          # Centralized configuration & CLI arguments
-├── dataset.py         # Data loading & augmentation pipeline
-├── model.py           # Model factory (ResNet18, ResNet34, EfficientNet-B0, MobileNetV2)
-├── train.py           # Training loop with early stopping & checkpointing
-├── evaluate.py        # Confusion matrix, classification report, top/bottom classes
-├── inference.py       # Single-image prediction with top-K visualization
-├── requirements.txt   # Dependencies
-└── README.md
-```
+![Model Architecture](assets/architecture.png)
 
 ## Quick Start
 
@@ -111,9 +103,6 @@ python inference.py --image leaf_photo.jpg --checkpoint outputs/checkpoints/best
 
 | Parameter | Value |
 |-----------|-------|
-| Architecture | ResNet18 (ImageNet pretrained) |
-| Dataset | PlantVillage (43,444 train / 10,861 val) |
-| Input size | 224 x 224 px |
 | Optimizer | Adam (lr=1e-3, weight_decay=1e-4) |
 | Scheduler | ReduceLROnPlateau (patience=2, factor=0.5) |
 | Batch size | 32 |
@@ -137,6 +126,20 @@ python inference.py --image leaf_photo.jpg --checkpoint outputs/checkpoints/best
 - **Checkpoint resumption** — resume interrupted training from any checkpoint
 - **Reproducibility** — fixed random seeds across all libraries
 - **Smart evaluation** — top/bottom performing classes analysis for 38-class problem
+
+## Project Structure
+
+```
+crop-disease-detection-ai/
+├── config.py          # Centralized configuration & CLI arguments
+├── dataset.py         # Data loading & augmentation pipeline
+├── model.py           # Model factory (ResNet18, ResNet34, EfficientNet-B0, MobileNetV2)
+├── train.py           # Training loop with early stopping & checkpointing
+├── evaluate.py        # Confusion matrix, classification report, top/bottom classes
+├── inference.py       # Single-image prediction with top-K visualization
+├── requirements.txt   # Dependencies
+└── README.md
+```
 
 ## Tech Stack
 
