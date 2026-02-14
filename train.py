@@ -202,7 +202,7 @@ def main() -> None:
 
         # Early stopping
         if args.patience > 0 and epochs_no_improve >= args.patience:
-            logger.info("Early stopping triggered after %d epochs without improvement.", args.patience)
+            logger.info("Early stopping triggered after %d epochs without improvement.", epochs_no_improve)
             break
 
     elapsed = time.time() - t_start

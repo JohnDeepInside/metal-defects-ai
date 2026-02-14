@@ -114,10 +114,10 @@ print("✓ top_bottom_classes.png")
 
 # ── 3. Crop Distribution ────────────────────────────────────────────
 crop_counts = {
-    "Tomato": 18160, "Potato": 3000, "Corn": 3852, "Grape": 4062,
+    "Tomato": 17012, "Potato": 2152, "Corn": 3852, "Grape": 4062,
     "Apple": 3171, "Pepper": 2475, "Cherry": 1906, "Peach": 2657,
     "Strawberry": 1745, "Orange": 5507, "Soybean": 5090, "Squash": 1835,
-    "Blueberry": 1502, "Raspberry": 1617
+    "Blueberry": 1502, "Raspberry": 1339
 }
 crops_sorted = dict(sorted(crop_counts.items(), key=lambda x: x[1], reverse=True))
 
