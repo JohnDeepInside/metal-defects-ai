@@ -1,94 +1,60 @@
-import os
-import zipfile
+"""
+Training script for Metal Surface Defect Detection.
+
+Usage:
+    python train.py --data-dir data/split --epochs 20 --model efficientnet_b0
+    python train.py --resume outputs/checkpoints/best_model.pth
+"""
+
+import json
+import logging
+import random
+import time
+from pathlib import Path
+
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import transforms, datasets
-from torch.utils.data import DataLoader
-from torchvision.models import efficientnet_b0, EfficientNet_B0_Weights
 
-# ============================
-# Mount Google Drive
-# ============================
-from google.colab import drive
-drive.mount('/content/drive')
+import config
+from dataset import get_dataloaders
+from model import build_model
 
-# ============================
-# Extract dataset from ZIP
-# ============================
-ZIP_PATH    = '/content/drive/MyDrive/NEU_defects.zip'
-EXTRACT_DIR = '/content/NEU_defects'
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s",
+    datefmt="%H:%M:%S",
+)
+logger = logging.getLogger(__name__)
 
-if not os.path.exists(EXTRACT_DIR):
-    print("Extracting dataset...")
-    with zipfile.ZipFile(ZIP_PATH, 'r') as zip_ref:
-        zip_ref.extractall(EXTRACT_DIR)
-    print("Done!")
-else:
-    print("Dataset already extracted.")
 
-# ============================
-# Data paths
-# ============================
-TRAIN_DIR = "/content/NEU_defects/train"
-VAL_DIR   = "/content/NEU_defects/valid"
+# ============================================================
+# Reproducibility
+# ============================================================
+def set_seed(seed: int) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
-# ============================
-# Hyperparameters
-# ============================
-BATCH_SIZE = 32
-LR         = 0.001
-NUM_EPOCHS = 15
 
-# ============================
-# Image transforms
-# ============================
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor()
-])
-
-# ============================
-# Datasets and loaders
-# ============================
-train_dataset = datasets.ImageFolder(TRAIN_DIR, transform=transform)
-val_dataset   = datasets.ImageFolder(VAL_DIR,   transform=transform)
-
-train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True,  num_workers=2)
-val_loader   = DataLoader(val_dataset,   batch_size=BATCH_SIZE, shuffle=False, num_workers=2)
-
-# ============================
-# Device setup
-# ============================
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print("Using device:", device)
-print(f"Classes: {len(train_dataset.classes)}")
-print(f"Train: {len(train_dataset)} | Val: {len(val_dataset)}")
-
-# ============================
-# Model (EfficientNet-B0)
-# ============================
-model = efficientnet_b0(weights=EfficientNet_B0_Weights.DEFAULT)
-num_features = model.classifier[1].in_features
-model.classifier[1] = nn.Linear(num_features, len(train_dataset.classes))
-model = model.to(device)
-
-# ============================
-# Loss function and optimizer
-# ============================
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=LR)
-
-# ============================
-# Training function
-# ============================
-def train_one_epoch():
+# ============================================================
+# Training & validation steps
+# ============================================================
+def train_one_epoch(
+    model: nn.Module,
+    loader: torch.utils.data.DataLoader,
+    criterion: nn.Module,
+    optimizer: optim.Optimizer,
+    device: torch.device,
+) -> tuple[float, float]:
     model.train()
-    running_loss = 0.0
-    correct = 0
-    total = 0
+    running_loss, correct, total = 0.0, 0, 0
 
-    for images, labels in train_loader:
+    for images, labels in loader:
         images, labels = images.to(device), labels.to(device)
 
         optimizer.zero_grad()
@@ -98,51 +64,155 @@ def train_one_epoch():
         optimizer.step()
 
         running_loss += loss.item() * images.size(0)
-        _, predicted = torch.max(outputs, 1)
-        correct += (predicted == labels).sum().item()
+        correct += (outputs.argmax(1) == labels).sum().item()
         total += labels.size(0)
 
-    epoch_loss = running_loss / total
-    epoch_acc  = correct / total
-    return epoch_loss, epoch_acc
+    return running_loss / total, correct / total
 
-# ============================
-# Validation function
-# ============================
-def validate():
+
+@torch.no_grad()
+def validate(
+    model: nn.Module,
+    loader: torch.utils.data.DataLoader,
+    criterion: nn.Module,
+    device: torch.device,
+) -> tuple[float, float]:
     model.eval()
-    running_loss = 0.0
-    correct = 0
-    total = 0
+    running_loss, correct, total = 0.0, 0, 0
 
-    with torch.no_grad():
-        for images, labels in val_loader:
-            images, labels = images.to(device), labels.to(device)
-            outputs = model(images)
-            loss = criterion(outputs, labels)
+    for images, labels in loader:
+        images, labels = images.to(device), labels.to(device)
+        outputs = model(images)
+        loss = criterion(outputs, labels)
 
-            running_loss += loss.item() * images.size(0)
-            _, predicted = torch.max(outputs, 1)
-            correct += (predicted == labels).sum().item()
-            total += labels.size(0)
+        running_loss += loss.item() * images.size(0)
+        correct += (outputs.argmax(1) == labels).sum().item()
+        total += labels.size(0)
 
-    val_loss = running_loss / total
-    val_acc  = correct / total
-    return val_loss, val_acc
+    return running_loss / total, correct / total
 
-# ============================
-# Training loop — 15 epochs
-# ============================
-for epoch in range(NUM_EPOCHS):
-    train_loss, train_acc = train_one_epoch()
-    val_loss, val_acc = validate()
-    print(f"Epoch {epoch+1}/{NUM_EPOCHS} | "
-          f"Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f} | "
-          f"Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
 
-# ============================
-# Save model to Google Drive
-# ============================
-SAVE_PATH = '/content/drive/MyDrive/neu_defects_efficientnet.pth'
-torch.save(model.state_dict(), SAVE_PATH)
-print(f"Model saved: {SAVE_PATH}")
+# ============================================================
+# Main
+# ============================================================
+def main() -> None:
+    args = config.parse_args()
+    set_seed(args.seed)
+
+    # Directories
+    checkpoint_dir = args.output_dir / "checkpoints"
+    results_dir = args.output_dir / "results"
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    results_dir.mkdir(parents=True, exist_ok=True)
+
+    # Device
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    logger.info("Device: %s", device)
+
+    # Data
+    loaders = get_dataloaders(
+        args.data_dir, batch_size=args.batch_size, num_workers=args.num_workers,
+    )
+    logger.info(
+        "Dataset loaded — train: %d | val: %d | test: %d",
+        len(loaders["train"].dataset),
+        len(loaders["val"].dataset),
+        len(loaders.get("test", loaders["val"]).dataset),
+    )
+    logger.info("Classes: %s", loaders["train"].dataset.classes)
+
+    # Model
+    model = build_model(arch=args.model, pretrained=args.pretrained).to(device)
+    logger.info("Model: %s (%s params)", args.model,
+                f"{sum(p.numel() for p in model.parameters()):,}")
+
+    # Loss, optimizer, scheduler
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(
+        model.parameters(), lr=args.lr, weight_decay=args.weight_decay,
+    )
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer, mode="min",
+        patience=config.SCHEDULER_PATIENCE,
+        factor=config.SCHEDULER_FACTOR,
+    )
+
+    # Resume from checkpoint
+    start_epoch = 0
+    best_val_acc = 0.0
+    if args.resume and args.resume.exists():
+        ckpt = torch.load(args.resume, map_location=device, weights_only=True)
+        model.load_state_dict(ckpt["model_state_dict"])
+        optimizer.load_state_dict(ckpt["optimizer_state_dict"])
+        start_epoch = ckpt["epoch"] + 1
+        best_val_acc = ckpt.get("best_val_acc", 0.0)
+        logger.info("Resumed from epoch %d (best val acc: %.4f)", start_epoch, best_val_acc)
+
+    # History
+    history: dict[str, list[float]] = {
+        "train_loss": [], "train_acc": [],
+        "val_loss": [], "val_acc": [], "lr": [],
+    }
+    epochs_no_improve = 0
+
+    # ---- Training loop ----
+    logger.info("Starting training for %d epochs...", args.epochs)
+    t_start = time.time()
+
+    for epoch in range(start_epoch, args.epochs):
+        train_loss, train_acc = train_one_epoch(
+            model, loaders["train"], criterion, optimizer, device,
+        )
+        val_loss, val_acc = validate(model, loaders["val"], criterion, device)
+        scheduler.step(val_loss)
+
+        lr = optimizer.param_groups[0]["lr"]
+        history["train_loss"].append(train_loss)
+        history["train_acc"].append(train_acc)
+        history["val_loss"].append(val_loss)
+        history["val_acc"].append(val_acc)
+        history["lr"].append(lr)
+
+        logger.info(
+            "Epoch %2d/%d | Train Loss: %.4f  Acc: %.4f | "
+            "Val Loss: %.4f  Acc: %.4f | LR: %.1e",
+            epoch + 1, args.epochs,
+            train_loss, train_acc, val_loss, val_acc, lr,
+        )
+
+        # Checkpoint best model
+        if val_acc > best_val_acc:
+            best_val_acc = val_acc
+            epochs_no_improve = 0
+            torch.save(
+                {
+                    "epoch": epoch,
+                    "model_state_dict": model.state_dict(),
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "best_val_acc": best_val_acc,
+                    "arch": args.model,
+                    "num_classes": config.NUM_CLASSES,
+                    "class_names": config.CLASS_NAMES,
+                },
+                checkpoint_dir / "best_model.pth",
+            )
+            logger.info("  ✓ Best model saved (val acc: %.4f)", best_val_acc)
+        else:
+            epochs_no_improve += 1
+
+        # Early stopping
+        if args.patience > 0 and epochs_no_improve >= args.patience:
+            logger.info("Early stopping triggered after %d epochs without improvement.", epochs_no_improve)
+            break
+
+    elapsed = time.time() - t_start
+    logger.info("Training complete in %.1f s — Best Val Acc: %.4f", elapsed, best_val_acc)
+
+    # Save training history
+    with open(results_dir / "history.json", "w") as f:
+        json.dump(history, f, indent=2)
+    logger.info("Training history saved → %s", results_dir / "history.json")
+
+
+if __name__ == "__main__":
+    main()
