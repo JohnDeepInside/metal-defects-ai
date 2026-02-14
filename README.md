@@ -2,6 +2,10 @@
 
 Deep learning system for automated visual inspection of steel surfaces. Classifies 6 types of manufacturing defects using transfer learning with EfficientNet-B0.
 
+## Architecture
+
+![Model Architecture](assets/architecture.png)
+
 ## Problem
 
 Manufacturing lines lose time and money when defective parts slip through quality control. Manual visual inspection is slow, inconsistent, and expensive. This model automates the process — analyzing a single photo of a steel surface in milliseconds and returning the defect type with confidence scores.
@@ -16,6 +20,28 @@ Manufacturing lines lose time and money when defective parts slip through qualit
 | **Pitted Surface** | Small holes or cavities |
 | **Rolled-in Scale** | Oxide scale pressed into surface |
 | **Scratches** | Linear surface damage |
+
+## Results
+
+### Training Curves
+
+![Training Curves](assets/training_curves.png)
+
+### Confusion Matrix
+
+![Confusion Matrix](assets/confusion_matrix.png)
+
+### Per-Class Accuracy
+
+![Per-Class Accuracy](assets/per_class_accuracy.png)
+
+### Model Comparison
+
+![Model Comparison](assets/model_comparison.png)
+
+### Dataset Distribution
+
+![Dataset Distribution](assets/dataset_distribution.png)
 
 ## Project Structure
 

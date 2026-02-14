@@ -2,6 +2,10 @@
 
 Deep learning system for automated classification of skin lesions from dermoscopic images. Trained on 10,000+ medical images across 7 diagnostic categories using MobileNetV2 with transfer learning.
 
+## Architecture
+
+![Model Architecture](assets/architecture.png)
+
 ## Problem
 
 Early detection of melanoma saves lives, but visual diagnosis is challenging even for trained dermatologists. This model assists screening by classifying suspicious skin lesions, helping identify cases that warrant immediate medical review.
@@ -17,6 +21,28 @@ Early detection of melanoma saves lives, but visual diagnosis is challenging eve
 | **nv** | Melanocytic Nevi (moles) | Low |
 | **df** | Dermatofibroma | Low |
 | **vasc** | Vascular Lesion | Low |
+
+## Results
+
+### Training Curves
+
+![Training Curves](assets/training_curves.png)
+
+### Confusion Matrix
+
+![Confusion Matrix](assets/confusion_matrix.png)
+
+### Per-Class Accuracy
+
+![Per-Class Accuracy](assets/per_class_accuracy.png)
+
+### ROC Curves
+
+![ROC Curves](assets/roc_curves.png)
+
+### Class Distribution (HAM10000)
+
+![Class Distribution](assets/class_distribution.png)
 
 ## Project Structure
 

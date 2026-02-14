@@ -1,6 +1,10 @@
-# Plant Disease Detection — AgroAI
+# Crop Disease Detection — AgroAI
 
 Deep learning system for identifying plant diseases from leaf photographs. Trained on 54,000+ images across 38 disease categories using ResNet18 with transfer learning, achieving 98.8% validation accuracy.
+
+## Architecture
+
+![Model Architecture](assets/architecture.png)
 
 ## Problem
 
@@ -20,10 +24,32 @@ The model covers **14 crop species** and **38 categories** including:
 | **Pepper** | Bacterial spot, Healthy |
 | **+ more** | Cherry, Strawberry, Peach, Orange, Soybean, Squash, Blueberry |
 
+## Results
+
+### Training Curves
+
+![Training Curves](assets/training_curves.png)
+
+### Top & Bottom Performing Classes
+
+![Top & Bottom Classes](assets/top_bottom_classes.png)
+
+### Model Comparison
+
+![Model Comparison](assets/model_comparison.png)
+
+### Dataset — Images per Crop
+
+![Crop Distribution](assets/crop_distribution.png)
+
+### Disease vs Healthy Categories
+
+![Disease vs Healthy](assets/disease_healthy_ratio.png)
+
 ## Project Structure
 
 ```
-agro-ai-portfolio/
+crop-disease-detection-ai/
 ├── config.py          # Centralized configuration & CLI arguments
 ├── dataset.py         # Data loading & augmentation pipeline
 ├── model.py           # Model factory (ResNet18, ResNet34, EfficientNet-B0, MobileNetV2)
