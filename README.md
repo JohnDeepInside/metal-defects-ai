@@ -13,11 +13,20 @@ Deep learning system for automated visual inspection of steel surfaces. Classifi
 
 | Metric | Value |
 |--------|-------|
-| Architecture | EfficientNet-B0 (ImageNet pretrained) |
+| Best model | EfficientNet-B0 |
+| Best accuracy | 96.7% |
 | Classes | 6 defect types |
 | Dataset | NEU Surface Defects — 1,800 images |
 | Input size | 224 x 224 px |
 | Class balancing | WeightedRandomSampler |
+
+### Model Comparison
+
+| Model | Accuracy | Parameters |
+|-------|----------|------------|
+| **EfficientNet-B0** | **96.7%** | 5.3M |
+| ResNet18 | 95.1% | 11.7M |
+| MobileNetV2 | 94.2% | 3.4M |
 
 ### Training Curves
 
